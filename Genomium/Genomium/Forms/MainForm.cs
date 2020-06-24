@@ -70,7 +70,7 @@ namespace Genomium
                 "Alunos :  Bruno Jonatha Orlandy\n" +
                 "Jessica Da Silva Pavan\n" +
                 "Vinicius Molon Toigo\n" +
-                "Codigo fonte : https://github.com/ViniciusMToigo/Genomium.git";
+                "Codigo fonte :https://github.com/BrunoOrlandy/Genoma-fundamentos-SO";
             MessageBox.Show(texto, title);
         }
 
@@ -117,6 +117,8 @@ namespace Genomium
                 }
                 System.IO.File.WriteAllLines(sfd.FileName, output, System.Text.Encoding.UTF8);
                 MessageBox.Show("Arquivo foi gerado e está pronto para uso.");
+                           
+                this.gvDados.DataSource = new List<Organismo>();
             }
         }
     }

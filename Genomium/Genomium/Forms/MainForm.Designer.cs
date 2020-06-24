@@ -64,7 +64,7 @@
             this.gvDados.Location = new System.Drawing.Point(12, 41);
             this.gvDados.Name = "gvDados";
             this.gvDados.ReadOnly = true;
-            this.gvDados.Size = new System.Drawing.Size(737, 459);
+            this.gvDados.Size = new System.Drawing.Size(737, 462);
             this.gvDados.TabIndex = 0;
             this.gvDados.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvDados_CellContentClick);
             // 
@@ -135,7 +135,7 @@
             // btnImportar
             // 
             this.btnImportar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnImportar.Location = new System.Drawing.Point(110, 505);
+            this.btnImportar.Location = new System.Drawing.Point(12, 506);
             this.btnImportar.Name = "btnImportar";
             this.btnImportar.Size = new System.Drawing.Size(66, 23);
             this.btnImportar.TabIndex = 3;
@@ -146,7 +146,7 @@
             // btnExportar
             // 
             this.btnExportar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnExportar.Location = new System.Drawing.Point(12, 505);
+            this.btnExportar.Location = new System.Drawing.Point(84, 509);
             this.btnExportar.Name = "btnExportar";
             this.btnExportar.Size = new System.Drawing.Size(75, 23);
             this.btnExportar.TabIndex = 4;
@@ -169,7 +169,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(761, 532);
+            this.ClientSize = new System.Drawing.Size(761, 535);
             this.Controls.Add(this.btnInfo);
             this.Controls.Add(this.btnExportar);
             this.Controls.Add(this.btnImportar);
