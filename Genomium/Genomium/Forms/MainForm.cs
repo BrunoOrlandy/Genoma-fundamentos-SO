@@ -39,17 +39,25 @@ namespace Genomium
 
         public void ProcessarCSV(string caminho)
         {
-            string[] linhas = System.IO.File.ReadAllLines(caminho);
+            try
+            {
+                string[] linhas = System.IO.File.ReadAllLines(caminho);
 
-
-            Parallel.ForEach(linhas, new ParallelOptions() { MaxDegreeOfParallelism = 8 }, linha =>
-                    {
-                        string[] dados = linha.Split(';');
-                        Organismos.Add(new Organismo(dados[0], dados[1], dados[2], dados[3], dados[4], Convert.ToInt32(dados[5]), Convert.ToInt32(dados[6]), dados[7]));
-                    });
-
-            this.gvDados.AutoGenerateColumns = false;
-            this.gvDados.DataSource = Organismos;
+                //le o arquivo por partes
+                Parallel.ForEach(linhas, new ParallelOptions() { MaxDegreeOfParallelism = 8 }, linha =>
+                        {
+                            string[] dados = linha.Split(';');
+                            Organismos.Add(new Organismo(dados[0], dados[1], dados[2], dados[3], dados[4], Convert.ToInt32(dados[5]), Convert.ToInt32(dados[6]), dados[7]));
+                        });
+                this.gvDados.AutoGenerateColumns = false;
+                this.gvDados.DataSource = Organismos;
+                // alterar pra tasks (threads)
+                //gvDados.DataSource = Organismos.OrderBy(x => x.Gene).ThenBy(x => x.Nome).ToArray();
+            }
+            catch (AggregateException e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
         }
         private void MainForm_Load(object sender, EventArgs e)
@@ -117,7 +125,7 @@ namespace Genomium
                 }
                 System.IO.File.WriteAllLines(sfd.FileName, output, System.Text.Encoding.UTF8);
                 MessageBox.Show("Arquivo foi gerado e está pronto para uso.");
-                           
+
                 this.gvDados.DataSource = new List<Organismo>();
             }
         }
