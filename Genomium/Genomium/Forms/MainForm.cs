@@ -47,12 +47,19 @@ namespace Genomium
                 Parallel.ForEach(linhas, new ParallelOptions() { MaxDegreeOfParallelism = 8 }, linha =>
                         {
                             string[] dados = linha.Split(';');
-                            Organismos.Add(new Organismo(dados[0], dados[1], dados[2], dados[3], dados[4], Convert.ToInt32(dados[5]), Convert.ToInt32(dados[6]), dados[7]));
+                            Organismos.Add(new Organismo(dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7]));
+
                         });
+
                 this.gvDados.AutoGenerateColumns = false;
+
                 this.gvDados.DataSource = Organismos;
-                // alterar pra tasks (threads)
-                //gvDados.DataSource = Organismos.OrderBy(x => x.Gene).ThenBy(x => x.Nome).ToArray();
+
+
+                //List<Organismo> ll = new List<Organismo>();
+                //    ll =  Organismos.OrderBy(x => x.Gene).ThenBy(x => x.Nome).ToList();
+
+                //this.gvDados.DataSource = ll;
             }
             catch (AggregateException e)
             {
@@ -60,6 +67,25 @@ namespace Genomium
             }
 
         }
+
+        //public void Ordenar(List<Organismo> organismo)
+        //{
+        //    Task<List<Organismo>> ordenarPorGene = Task.Factory.StartNew(() =>
+        //    {
+        //        organismo.OrderBy(o => o.Gene).ToList();
+
+        //        return organismo;
+        //    });
+
+
+        //    //await ordenarPorGene.ContinueWith();
+
+        //    Task<List<Organismo>> ordenarPorNome = ordenarPorGene.ContinueWith(ordenarPorGene , ) =>  {
+        //        return organismo.OrderBy(o => o.Nome).ToList();
+        //    });
+
+        //}
+
         private void MainForm_Load(object sender, EventArgs e)
         {
 
@@ -107,6 +133,15 @@ namespace Genomium
                         MessageBox.Show("Não foi possível gravar os dados no disco." + ex.Message);
                     }
                 }
+
+                var query = (from organimo in Organismos.AsParallel()
+                             orderby organimo.Gene
+                             select new { Details = organimo.Nome }).AsSequential().Take(5);
+
+                DataGridView dt = new DataGridView();
+                //  dt.DataSource =  Organismos.OrderBy(x => x.Gene).ThenBy(x => x.Nome).ToArray();
+                dt.DataSource = query;
+
                 int columnCount = gvDados.ColumnCount;
                 string columnNames = "";
                 string[] output = new string[gvDados.RowCount + 1];

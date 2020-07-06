@@ -15,8 +15,8 @@ namespace Genomium
         public string Tipo { get; set; }
         public string Familia { get; set; }
         public string PapelBiologico { get; set; }
-        public int PosicaoInicial { get; set; }
-        public int PosicaoFinal { get; set; }
+        public string PosicaoInicial { get; set; }
+        public string PosicaoFinal { get; set; }
         public string SequenciaDNA { get; set; }
 
         #endregion
@@ -28,8 +28,8 @@ namespace Genomium
             string tipo,
             string familia, 
             string papelBiologico, 
-            int posicaoInicial, 
-            int posicaoFinal, 
+            string posicaoInicial, 
+            string posicaoFinal, 
             string sequenciaDNA)
         {
             this.Nome = nome;
