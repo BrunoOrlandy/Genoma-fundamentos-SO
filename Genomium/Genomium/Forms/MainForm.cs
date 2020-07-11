@@ -9,19 +9,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace Genomium
 {
     public partial class MainForm : Form
     {
         List<Organismo> Organismos = new List<Organismo>();
 
+
         public MainForm()
         {
             InitializeComponent();
         }
 
+
         private void btnBuscar_Click(object sender, EventArgs e)
         {
+
 
             try
             {
@@ -37,65 +41,53 @@ namespace Genomium
             }
         }
 
+
         public void ProcessarCSV(string caminho)
         {
             try
             {
                 string[] linhas = System.IO.File.ReadAllLines(caminho);
 
+
+                Organismos.Clear();
+
+
                 //le o arquivo por partes
                 Parallel.ForEach(linhas, new ParallelOptions() { MaxDegreeOfParallelism = 8 }, linha =>
-                        {
-                            string[] dados = linha.Split(';');
-                            Organismos.Add(new Organismo(dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7]));
+                {
+                    string[] dados = linha.Split(';');
 
-                        });
+
+                    Organismos.Add(new Organismo(dados[0], dados[1], dados[2], dados[3], dados[4], dados[5], dados[6], dados[7]));
+                });
+
 
                 this.gvDados.AutoGenerateColumns = false;
 
-                this.gvDados.DataSource = Organismos;
 
-
-                //List<Organismo> ll = new List<Organismo>();
-                //    ll =  Organismos.OrderBy(x => x.Gene).ThenBy(x => x.Nome).ToList();
-
-                //this.gvDados.DataSource = ll;
+                this.gvDados.DataSource = Organismos.Where(x => x != null).AsParallel().OrderBy(o => o.Gene).ThenBy(o => o.Nome).ToList();
             }
             catch (AggregateException e)
             {
                 Console.WriteLine(e.Message);
             }
-
         }
 
-        //public void Ordenar(List<Organismo> organismo)
-        //{
-        //    Task<List<Organismo>> ordenarPorGene = Task.Factory.StartNew(() =>
-        //    {
-        //        organismo.OrderBy(o => o.Gene).ToList();
-
-        //        return organismo;
-        //    });
-
-
-        //    //await ordenarPorGene.ContinueWith();
-
-        //    Task<List<Organismo>> ordenarPorNome = ordenarPorGene.ContinueWith(ordenarPorGene , ) =>  {
-        //        return organismo.OrderBy(o => o.Nome).ToList();
-        //    });
-
-        //}
 
         private void MainForm_Load(object sender, EventArgs e)
         {
 
+
         }
+
 
 
         private void lblAlunos_Click(object sender, EventArgs e)
         {
 
+
         }
+
 
         private void btnInfo_Click(object sender, EventArgs e)
         {
@@ -108,10 +100,13 @@ namespace Genomium
             MessageBox.Show(texto, title);
         }
 
+
         private void gvDados_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+
         }
+
 
         private void btnExportar_Click(object sender, EventArgs e)
         {
@@ -134,13 +129,12 @@ namespace Genomium
                     }
                 }
 
+
+
                 var query = (from organimo in Organismos.AsParallel()
                              orderby organimo.Gene
                              select new { Details = organimo.Nome }).AsSequential().Take(5);
 
-                DataGridView dt = new DataGridView();
-                //  dt.DataSource =  Organismos.OrderBy(x => x.Gene).ThenBy(x => x.Nome).ToArray();
-                dt.DataSource = query;
 
                 int columnCount = gvDados.ColumnCount;
                 string columnNames = "";
@@ -154,12 +148,12 @@ namespace Genomium
                 {
                     for (int j = 0; j < columnCount; j++)
                     {
-                        //output[i] += dataGridView.Rows[i - 1].Cells[j].Value.ToString() + ",";
                         if (gvDados.Rows[i - 1].Cells[j].Value != null) output[i] += gvDados.Rows[i - 1].Cells[j].Value.ToString() + ";";
                     }
                 }
                 System.IO.File.WriteAllLines(sfd.FileName, output, System.Text.Encoding.UTF8);
                 MessageBox.Show("Arquivo foi gerado e está pronto para uso.");
+
 
                 this.gvDados.DataSource = new List<Organismo>();
             }
